@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from 'react'
 import {
   AppBar,
   Toolbar,
@@ -6,36 +6,19 @@ import {
   Box,
   makeStyles,
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, withRouter} from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({
-  navlinks: {
-    marginLeft: theme.spacing(10),
-    display: "flex",
-  },
- logo: {
-    flexGrow: "1",
-    cursor: "pointer",
-  },
-  link: {
-    textDecoration: "none",
-    color: "white",
-    fontSize: "20px",
-    marginLeft: theme.spacing(35),
-    "&:hover": {
-      color: "yellow",
-      borderBottom: "1px solid white",
-    },
-  },
-}));
+class Landing extends Component {
+  logOut(e) {
+    e.preventDefault()
+    localStorage.removeItem('usertoken')
+    this.props.history.push(`/`)
+  }
 
-function Navbar() {
-  const classes = useStyles();
-
-  return (
-    <AppBar position="static">
-      <CssBaseline />
+  render() {
+    const loginRegLink = (
       <Toolbar>
+        <li className="nav-item">
       <div className="Logo">
             {" "}
             <span role="img" aria-label="logo">
@@ -43,25 +26,43 @@ function Navbar() {
             </span>{" "}
           </div>
           <div className="Title"> TrackMyAttendance </div>
-          <div className={classes.navlinks}>
-         
-            <Link to="/Home" className={classes.link}>
+
+            <Link to="/Home" className="nav-link">
               Home
             </Link>
-            <Link to="/about" className={classes.link}>
+            <Link to="/about" className="nav-link">
               About
             </Link>
-            <Link to="/contact" className={classes.link}>
-              Contact
+            <Link to="/register" className="nav-link">
+              Register
             </Link>
-            <Link to="/faq" className={classes.link}>
-              FAQ
-            </Link>
-          
-          </div>
-          
+            <Link to="/login" className="nav-link">
+              Login
+            </Link>   
+             </li>  
       </Toolbar>
-    </AppBar>
-  );
+    )
+      return (
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark rounded">
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarsExample10"
+            aria-controls="navbarsExample10"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon" />
+          </button>
+          <div
+          className="collapse navbar-collapse justify-content-md-center"
+          id="navbarsExample10"
+        >
+          {localStorage.usertoken ? userLink : loginRegLink}
+          </div>
+      </nav>
+  )
+  }
 }
-export default Navbar;
+export default withRouter(Landing)
